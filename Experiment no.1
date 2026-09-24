@@ -1,0 +1,115 @@
+#include <stdio.h>
+#include <string.h>
+
+int main()
+{
+    int choice;
+    char str1[100];
+    printf("Enter 1st string: ");
+    scanf("%99s", str1);
+
+    do
+    {
+        printf("\n\nOperations are:\n");
+        printf("1. Substring\n");
+        printf("2. Palindrome\n");
+        printf("3. Copy\n");
+        printf("4. Reverse\n");
+        printf("5. Compare\n");
+        printf("6. Exit\n");
+
+        printf("Enter operation of choice: ");
+        scanf("%d", &choice);
+
+        switch (choice)
+        {
+        case 1:
+        {
+            char sub[100];
+            int s, l, i;
+            printf("Enter starting index: ");
+            scanf("%d", &s);
+            printf("Enter length of substring: ");
+            scanf("%d", &l);
+            if (s < 0 || s >= strlen(str1) || s + l > strlen(str1))
+            {
+                printf("Invalid substring!");
+            }
+            else
+            {
+                for (i = 0; i < l; i++)
+                {
+                    sub[i] = str1[s + i];
+                }
+                sub[i] = '\0';
+                printf("Substring: %s\n", sub);
+            }
+            break;
+        }
+
+        case 2:
+        {
+            int j, len, p = 1;
+            len = strlen(str1);
+            for (j = 0; j < len / 2; j++)
+            {
+                if (str1[j] != str1[len - j - 1])
+                {
+                    p = 0;
+                    break;
+                }
+            }
+            if (p)
+                printf("Palindrome\n");
+            else
+                printf("Not Palindrome\n");
+            break;
+        }
+
+        case 3:
+        {
+            char str2[100];
+            printf("Enter 2nd string: ");
+            scanf("%99s", str2);
+            strcpy(str1, str2);
+            printf("After copying:\n%s\n", str1);
+            break;
+        }
+
+        case 4:
+        {
+            int k, lt;
+            char temp;
+            lt = strlen(str1);
+            for (k = 0; k < lt / 2; k++)
+            {
+                temp = str1[k];
+                str1[k] = str1[lt - k - 1];
+                str1[lt - k - 1] = temp;
+            }
+            printf("Reversed string: %s\n", str1);
+            break;
+        }
+
+        case 5:
+        {
+            char str3[100];
+            printf("Enter 2nd string: ");
+            scanf("%99s", str3);
+            if (strcmp(str1, str3) == 0)
+                printf("Strings are Equal\n");
+            else
+                printf("Strings are Not Equal\n");
+            break;
+        }
+
+        case 6:
+            printf("Exiting\n");
+            break;
+            
+        default:
+            printf("Invalid Choice!\n");
+        }
+    } while (choice != 6);
+    return 0;
+}
