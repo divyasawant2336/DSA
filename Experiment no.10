@@ -1,0 +1,113 @@
+#include <stdio.h>
+#include <stdlib.h>
+
+#define MAX 100
+
+struct Queue {
+    char data[MAX];
+    int front, rear;
+};
+
+void initialize(struct Queue *q) {
+    q->front = -1;
+    q->rear = -1;
+}
+
+int isFull(struct Queue *q) {
+    return q->rear == MAX - 1;
+}
+
+int isEmpty(struct Queue *q) {
+    return q->front == -1;
+}
+
+// UART Transmit (Enqueue)
+void transmit(struct Queue *q, char ch) {
+    if (isFull(q)) {
+        printf("Transmission buffer is full!\n");
+        return;
+    }
+
+    if (q->front == -1)
+        q->front = 0;
+
+    q->data[++q->rear] = ch;
+
+    printf("Transmitted: %c\n", ch);
+}
+
+void receive(struct Queue *q) {
+    if (isEmpty(q)) {
+        printf("No data available to receive!\n");
+        return;
+    }
+
+    printf("Received: %c\n", q->data[q->front]);
+
+    if (q->front == q->rear) {
+        q->front = -1;
+        q->rear = -1;
+    }
+    else {
+        q->front++;
+    }
+}
+
+void display(struct Queue *q) {
+    int i;
+
+    if (isEmpty(q)) {
+        printf("Buffer is empty!\n");
+        return;
+    }
+
+    printf("UART Buffer: ");
+
+    for (i = q->front; i <= q->rear; i++)
+        printf("%c ", q->data[i]);
+
+    printf("\n");
+}
+
+int main() {
+    struct Queue q;
+    int choice;
+    char ch;
+
+    initialize(&q);
+
+    while (1) {
+        printf("\nUART COMMUNICATION");
+        printf("\n1. Transmit Data");
+        printf("\n2. Receive Data");
+        printf("\n3. Display Buffer");
+        printf("\n4. Exit");
+
+        printf("\nEnter your choice: ");
+        scanf("%d", &choice);
+
+        switch (choice) {
+
+            case 1:
+                printf("Enter character to transmit: ");
+                scanf(" %c", &ch);
+                transmit(&q, ch);
+                break;
+
+            case 2:
+                receive(&q);
+                break;
+
+            case 3:
+                display(&q);
+                break;
+
+            case 4:
+                exit(0);
+
+            default:
+                printf("Invalid choice!\n");
+        }
+    }
+    return 0;
+}
